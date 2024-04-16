@@ -113,3 +113,11 @@ app.post('/bid', (req, res) => {
     const result = standardHandler.handle(req.body);
     res.send(result);
 });
+
+app.get('/availability', (req, res) => {
+    res.json({
+        suites: suiteHandler.availableRooms,
+        deluxe: deluxeHandler.availableRooms,
+        standard: standardHandler.availableRooms
+    });
+});
