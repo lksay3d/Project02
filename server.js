@@ -2,9 +2,9 @@
 const { raw } = require('body-parser');
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = 1800;
 
-app.use(express.json());
+app.use(express.static('public'));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
