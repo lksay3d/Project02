@@ -45,6 +45,12 @@ class SuiteHandler extends roomHandler{
     }
 
     handle(request){
+        if(this.availableRooms = 0){
+            return{
+                accepted:false,
+                message: "Bid rejected. Sorry, no more suites available to book!"
+            };
+        }
         if(request.bid >= this.price && this.availableRooms > 0)
         {
             this.availableRooms--;
@@ -69,6 +75,12 @@ class DeluxeHandler extends roomHandler{
     }
 
     handle(request){
+        if(this.availableRooms = 0){
+            return{
+                accepted:false,
+                message: "Bid rejected. Sorry, no more deluxe rooms available to book!"
+            };
+        }
         if((request.bid >= this.priceMin && request.bid < this.priceMax || (this.successiveHandler && this.successiveHandler.availableRooms === 0 && request.bid >= this.priceMin)) && this.availableRooms > 0)
         {
             this.availableRooms--;
@@ -93,6 +105,12 @@ class StandardHandler extends roomHandler{
     }
 
     handle(request){
+        if(this.availableRooms = 0){
+            return{
+                accepted:false,
+                message: "Bid rejected. Sorry, no more standard rooms available to book!"
+            };
+        }
         if((request.bid >= this.priceMin && request.bid < this.priceMax || (this.successiveHandler && this.successiveHandler.availableRooms === 0 && request.bid >= this.priceMin)) && this.availableRooms > 0)
         {
             this.availableRooms--;
@@ -113,9 +131,24 @@ const suiteHandler = new SuiteHandler();
 const deluxeHandler = new DeluxeHandler(suiteHandler);
 const standardHandler = new StandardHandler(deluxeHandler);
 
+const allRoomsSoldOut = () => {
+    return suiteHandler.availableRooms === 0 &&
+    deluxeHandler.availableRooms === 0 &&
+    standardHandler.availableRooms === 0;
+};
+
 app.post('/bid', (req, res) => {
-    const result = standardHandler.handle(req.body);
-    res.send(result);
+    if(allRoomsSoldOut()){
+        res.send({
+            accepted:false,
+            message: "Sorry, all rooms are sold out!"
+        });
+    }
+    
+    else{
+        const result = standardHandler.handle(req.body);
+        res.send(result);
+    }
 });
 
 app.get('/availability', (req, res) => {
