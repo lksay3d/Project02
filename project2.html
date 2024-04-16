@@ -9,16 +9,26 @@
 </head>
 
 <body>
-    <form id="biddingForm" class="container">
+    <div class = "container">
+        <form id="biddingForm">
+            <label for="bid"> Enter your bid $ </label>
+            <input type="number" id="bid" name="bid" min = "80" required>
+            <button type="submit"> Submit Bid </button>
+        </form>
         
-    </form>
+        <div id = "result" class = "result">
+            <p id="response"></p>
+        </div>
 
-    <div id = "availableRooms" class="container">
-        <h2>Available Hotel Rooms</h2>
-        <ul id="available"></ul>
+        <h2>Hotel Room Availability</h2>
+        <ul id="availability">
+            <li>Suites Available: <span id="suitesAvailable"></span></li>
+            <li>Deluxe Rooms Available: <span id="deluxeAvailable"></span></li>
+            <li>Standard Rooms Available: <span id="standardAvailable"></span></li>
+        </ul>
     </div>
 
-    <script src="hotelbidder.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
