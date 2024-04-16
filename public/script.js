@@ -37,3 +37,7 @@ function updateAvailability() {
         console.log('Error fetching availability:', error);
     });
 }
+
+document.addEventListener('DOMContentLoaded', function(){
+    updateAvailability();
+});
