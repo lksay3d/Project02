@@ -122,12 +122,13 @@ class StandardHandler extends roomHandler{
         if((request.bid >= this.priceMin && request.bid < this.priceMax || (this.successiveHandler && this.successiveHandler.availableRooms === 0 && request.bid >= this.priceMin)) && this.availableRooms > 0)
         {
             this.availableRooms--;
-            
+
             return{
                 accepted: true,
                 message: "Bid accepted. Standard room booked!"
             };
         }
+        
         else
         {
             return super.handle(request);
