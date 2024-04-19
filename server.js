@@ -45,12 +45,13 @@ class SuiteHandler extends roomHandler{
     }
 
     handle(request){
-        if(this.availableRooms = 0){
+        if(this.availableRooms === 0){
             return{
                 accepted:false,
                 message: "Bid rejected. Sorry, no more suites available to book!"
             };
         }
+
         if(request.bid >= this.price && this.availableRooms > 0)
         {
             this.availableRooms--;
@@ -59,6 +60,7 @@ class SuiteHandler extends roomHandler{
                 message: "Bid accepted. Suite room booked!"
             };
         }
+        
         else
         {
             return super.handle(request);
@@ -75,7 +77,7 @@ class DeluxeHandler extends roomHandler{
     }
 
     handle(request){
-        if(this.availableRooms = 0){
+        if(this.availableRooms === 0){
             return{
                 accepted:false,
                 message: "Bid rejected. Sorry, no more deluxe rooms available to book!"
@@ -100,12 +102,12 @@ class StandardHandler extends roomHandler{
     constructor(successiveHandler){
         super(successiveHandler);
         this.priceMin = 80;
-        this.priceMax = 150;
+        this.priceMax = 149;
         this.availableRooms = 45;
     }
 
     handle(request){
-        if(this.availableRooms = 0){
+        if(this.availableRooms === 0){
             return{
                 accepted:false,
                 message: "Bid rejected. Sorry, no more standard rooms available to book!"
