@@ -25,7 +25,8 @@ class roomHandler{
         if(this.successiveHandler)
         {
             return this.successiveHandler.handle(request);
-        }        
+        }
+
         else
         {
             return {
@@ -46,11 +47,9 @@ class SuiteHandler extends roomHandler{
 
     handle(request){
         if(this.availableRooms === 0){
-            return{
-                accepted:false,
-                message: "Bid rejected. Sorry, no more suites available to book!"
+            let message = "Bid rejected. Sorry, no more suites available to book!";
+            return super.handle({...request, message});
             };
-        }
 
         if(request.bid >= this.price && this.availableRooms > 0)
         {
@@ -60,7 +59,7 @@ class SuiteHandler extends roomHandler{
                 message: "Bid accepted. Suite room booked!"
             };
         }
-        
+
         else
         {
             return super.handle(request);
@@ -78,11 +77,10 @@ class DeluxeHandler extends roomHandler{
 
     handle(request){
         if(this.availableRooms === 0){
-            return{
-                accepted:false,
-                message: "Bid rejected. Sorry, no more deluxe rooms available to book!"
-            };
-        }
+            let message = "Bid rejected. Sorry, no more deluxe rooms available to book!";
+            return super.handle({...request, message});
+            }
+
         if((request.bid >= this.priceMin && request.bid < this.priceMax || (this.successiveHandler && this.successiveHandler.availableRooms === 0 && request.bid >= this.priceMin)) && this.availableRooms > 0)
         {
             this.availableRooms--;
@@ -91,6 +89,7 @@ class DeluxeHandler extends roomHandler{
                 message: "Bid accepted. Deluxe room booked!"
             };
         }
+
         else
         {
             return super.handle(request);
@@ -108,19 +107,28 @@ class StandardHandler extends roomHandler{
 
     handle(request){
         if(this.availableRooms === 0){
+            let message = "Bid rejected. Sorry, no more standard rooms available to book!";
+
+            if(this.successiveHandler && this.successiveHandler.availableRooms > 0 && request.bid >= this.successiveHandler.priceMin) {
+                return this.successiveHandler.handle(request);
+            }
+
             return{
-                accepted:false,
-                message: "Bid rejected. Sorry, no more standard rooms available to book!"
+                accepted: false,
+                message
             };
         }
+
         if((request.bid >= this.priceMin && request.bid < this.priceMax || (this.successiveHandler && this.successiveHandler.availableRooms === 0 && request.bid >= this.priceMin)) && this.availableRooms > 0)
         {
             this.availableRooms--;
+
             return{
                 accepted: true,
                 message: "Bid accepted. Standard room booked!"
             };
         }
+        
         else
         {
             return super.handle(request);
